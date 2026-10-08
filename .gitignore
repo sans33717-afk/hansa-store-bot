@@ -1,0 +1,7 @@
+node_modules/
+.env
+auth_info/
+auth_info_backup_*/
+session/
+*.backup
+bot-backup.js
