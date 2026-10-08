@@ -3952,11 +3952,79 @@ const http = require("http");
 
 const PORT = process.env.PORT || 3000;
 
+global.latestQR = null;
+
 http.createServer((req, res) => {
+
+  if (req.url === "/qr") {
+
+    res.writeHead(200, {
+      "Content-Type": "text/html; charset=utf-8"
+    });
+
+    if (!global.latestQR) {
+      res.end(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>HANSA STORE</title>
+        </head>
+        <body style="font-family:Arial;text-align:center;padding:40px">
+          <h2>HANSA STORE</h2>
+          <p>QR code is not ready yet.</p>
+          <p>Refresh this page.</p>
+        </body>
+        </html>
+      `);
+      return;
+    }
+
+    const qr = JSON.stringify(global.latestQR);
+
+    res.end(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>HANSA STORE WhatsApp QR</title>
+        <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+      </head>
+
+      <body style="font-family:Arial;text-align:center;background:#111;color:white;padding:20px">
+
+        <h2>HANSA STORE</h2>
+
+        <p>WhatsApp → Linked devices → Link a device</p>
+
+        <canvas id="qr"></canvas>
+
+        <p>Scan this QR with WhatsApp</p>
+
+        <script>
+          QRCode.toCanvas(
+            document.getElementById("qr"),
+            ${qr},
+            {
+              width: 280,
+              margin: 2
+            }
+          );
+        </script>
+
+      </body>
+      </html>
+    `);
+
+    return;
+  }
+
   res.writeHead(200, {
     "Content-Type": "text/plain; charset=utf-8"
   });
+
   res.end("HANSA STORE BOT ONLINE");
+
 }).listen(PORT, "0.0.0.0", () => {
   console.log(`🌐 HTTP server listening on port ${PORT}`);
 });
