@@ -22,7 +22,7 @@ const ADMIN_JID = "94764903603@s.whatsapp.net";
 const EZCASH_NUMBER = "0768431458";
 
 const DB_FILE = "./wallet-data.json";
-const AUTH_DIR = "./auth_info";
+const AUTH_DIR = "/tmp/auth_info";
 
 const FF_API_BASE = "http://siambhau69.eu.cc";
 const FF_API_KEY = process.env.FFINFO_API_KEY;
